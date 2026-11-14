@@ -1,6 +1,6 @@
-# myLink — 김태랑 프로필
+# myLink
 
-TypeScript와 Next.js App Router로 만든 김태랑의 반응형 개인 프로필 페이지입니다. `DESIGN.md`의 타이포그래피, 색상, 여백 및 카드 원칙을 참고했습니다.
+TypeScript와 Next.js App Router로 만든 반응형 링크 프로필 서비스입니다. `DESIGN.md`의 타이포그래피, 색상, 여백 및 카드 원칙을 참고했습니다.
 
 ## 실행
 
@@ -13,7 +13,7 @@ npm run dev
 
 ## 링크 관리
 
-비로그인 방문자는 김태랑의 공개 프로필과 Firestore의 `links` 컬렉션을 봅니다. Google 계정으로 로그인하면 해당 계정의 이름·사진·이메일과 `users/{uid}/links` 목록으로 전환됩니다. 공개 프로필 소유자 계정(`030126evan@gmail.com`)으로 로그인하면 기존 공개 `links` 목록을 관리합니다. 다른 사용자는 본인 링크만 읽고 추가할 수 있습니다. 이전 예시 링크는 실제 데이터로 저장하지 않았습니다.
+첫 화면(`/`)은 랜딩 페이지이고, `/login`에서 Google 계정으로 로그인합니다. 로그인 전에는 프로필과 링크가 표시되지 않습니다. 로그인 후 `/profile`에서 해당 계정의 이름·사진·이메일과 `users/{uid}/links` 목록을 확인합니다. 기존 소유자 계정(`030126evan@gmail.com`)으로 로그인하면 이전 `links` 목록을 계속 관리할 수 있습니다. 링크는 계정 소유자만 읽고 추가할 수 있습니다. 이전 예시 링크는 실제 데이터로 저장하지 않았습니다.
 
 링크는 페이지 로드, **새로고침** 버튼, 로그인·로그아웃, 링크 추가 완료 시에만 Firestore에서 한 번 조회합니다. 실시간 구독은 사용하지 않으며 `createdAt` 최신순으로 표시합니다.
 
@@ -29,4 +29,4 @@ npm run dev
 npx -y firebase-tools@latest deploy --only firestore:rules,auth --project mylink-94c8e
 ```
 
-공개 프로필 소유자 계정을 바꾸려면 `src/app/page.tsx`의 `PUBLIC_OWNER_EMAIL`, `firestore.rules`의 이메일, `firebase.json`의 지원 이메일을 함께 수정하고 설정을 다시 배포하세요. 기존 공개 링크 문서는 `links` 컬렉션에 그대로 유지됩니다.
+기존 링크 소유자 계정을 바꾸려면 `src/app/profile/page.tsx`의 `PUBLIC_OWNER_EMAIL`, `firestore.rules`의 이메일, `firebase.json`의 지원 이메일을 함께 수정하고 설정을 다시 배포하세요. 기존 링크 문서는 `links` 컬렉션에 그대로 유지됩니다.

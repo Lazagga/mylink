@@ -1,4 +1,4 @@
-// Public profile: /links/{linkId}, readable by visitors, writable by Kim Taerang.
+// Original owner links: /links/{linkId}, accessible only to Kim Taerang.
 // Signed-in profiles: /users/{uid}/links/{linkId}, readable and writable by that user.
 // Links require title, description, URL, icon, category, and server-created timestamp.
 rules_version = '2';
@@ -33,7 +33,7 @@ service cloud.firestore {
     }
 
     match /links/{linkId} {
-      allow read: if true;
+      allow read: if isPublicOwner();
       allow create: if isPublicOwner() && validLink();
       allow update, delete: if false;
     }

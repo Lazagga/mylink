@@ -3,8 +3,8 @@ import FirebaseAnalytics from "./firebase-analytics";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "김태랑 | 프로필과 링크",
-  description: "김태랑의 소개와 링크를 모아둔 개인 프로필 페이지",
+  title: "myLink | 모든 연결을 한곳에",
+  description: "나의 작업과 기록, 소셜 링크를 한 페이지에 모으는 myLink",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
