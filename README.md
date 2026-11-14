@@ -13,7 +13,9 @@ npm run dev
 
 ## 링크 관리
 
-링크 목록은 `src/app/page.tsx`의 고정 배열 대신 Cloud Firestore의 `links` 컬렉션에서 실시간으로 읽습니다. 페이지의 **링크 관리**를 열고 관리자 Google 계정(`030126evan@gmail.com`)으로 로그인하면 링크를 추가할 수 있습니다. 이전 예시 링크는 실제 데이터로 저장하지 않았으므로 처음에는 빈 목록이 표시됩니다. 사진 대신 이니셜 아바타를 사용합니다.
+비로그인 방문자는 김태랑의 공개 프로필과 Firestore의 `links` 컬렉션을 봅니다. Google 계정으로 로그인하면 해당 계정의 이름·사진·이메일과 `users/{uid}/links` 목록으로 전환됩니다. 공개 프로필 소유자 계정(`030126evan@gmail.com`)으로 로그인하면 기존 공개 `links` 목록을 관리합니다. 다른 사용자는 본인 링크만 읽고 추가할 수 있습니다. 이전 예시 링크는 실제 데이터로 저장하지 않았습니다.
+
+링크는 페이지 로드, **새로고침** 버튼, 로그인·로그아웃, 링크 추가 완료 시에만 Firestore에서 한 번 조회합니다. 실시간 구독은 사용하지 않으며 `createdAt` 최신순으로 표시합니다.
 
 ## Firebase
 
@@ -27,4 +29,4 @@ npm run dev
 npx -y firebase-tools@latest deploy --only firestore:rules,auth --project mylink-94c8e
 ```
 
-관리자 계정을 바꾸려면 `src/app/page.tsx`의 `ADMIN_EMAIL`, `firestore.rules`의 이메일, `firebase.json`의 지원 이메일을 함께 수정하고 설정을 다시 배포하세요.
+공개 프로필 소유자 계정을 바꾸려면 `src/app/page.tsx`의 `PUBLIC_OWNER_EMAIL`, `firestore.rules`의 이메일, `firebase.json`의 지원 이메일을 함께 수정하고 설정을 다시 배포하세요. 기존 공개 링크 문서는 `links` 컬렉션에 그대로 유지됩니다.
