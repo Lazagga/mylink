@@ -2,88 +2,23 @@
 
 import { useState } from "react";
 
-type Category = "전체" | "프로젝트" | "콘텐츠" | "소셜";
-type LinkItem = {
-  title: string;
-  description: string;
-  category: Exclude<Category, "전체">;
-  url: string;
-  mark: string;
-  tone: string;
-  featured?: boolean;
-};
-
-const categories: Category[] = ["전체", "프로젝트", "콘텐츠", "소셜"];
-
-// Replace these example.com URLs with your own links before publishing a real profile.
-const links: LinkItem[] = [
-  {
-    title: "새로운 작업 보기",
-    description: "최근에 만든 것들과 지금 진행 중인 이야기",
-    category: "프로젝트",
-    url: "https://example.com/projects",
-    mark: "✳",
-    tone: "mint",
-    featured: true,
-  },
-  {
-    title: "포트폴리오",
-    description: "작업과 생각을 한눈에",
-    category: "프로젝트",
-    url: "https://example.com/portfolio",
-    mark: "01",
-    tone: "stone",
-  },
-  {
-    title: "노트와 기록",
-    description: "배우고 발견한 것을 적습니다",
-    category: "콘텐츠",
-    url: "https://example.com/notes",
-    mark: "↗",
-    tone: "coral",
-  },
-  {
-    title: "뉴스레터",
-    description: "가끔 보내는 짧은 편지",
-    category: "콘텐츠",
-    url: "https://example.com/newsletter",
-    mark: "✉",
-    tone: "blue",
-  },
-  {
-    title: "인스타그램",
-    description: "일상 속 작은 장면들",
-    category: "소셜",
-    url: "https://example.com/instagram",
-    mark: "◎",
-    tone: "sand",
-  },
-  {
-    title: "깃허브",
-    description: "만들고 실험한 코드",
-    category: "소셜",
-    url: "https://example.com/github",
-    mark: "⌘",
-    tone: "lavender",
-  },
+// Replace these example.com URLs with real destinations when available.
+const links = [
+  { title: "포트폴리오", description: "작업과 프로젝트를 모아둔 곳", url: "https://example.com/portfolio", icon: "01", category: "WORK" },
+  { title: "깃허브", description: "코드와 실험을 기록하는 곳", url: "https://example.com/github", icon: "⌘", category: "CODE" },
+  { title: "블로그", description: "생각과 배움을 적어두는 곳", url: "https://example.com/blog", icon: "✎", category: "WRITING" },
+  { title: "인스타그램", description: "일상의 장면을 공유하는 곳", url: "https://example.com/instagram", icon: "◎", category: "SOCIAL" },
+  { title: "연락하기", description: "이야기를 나누고 싶을 때", url: "https://example.com/contact", icon: "↗", category: "CONTACT" },
 ];
 
-function ArrowIcon({ diagonal = false }: { diagonal?: boolean }) {
-  return diagonal ? (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19 19 5M8 5h11v11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-  ) : (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-  );
+function ArrowIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19 19 5M8 5h11v11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>;
 }
 
 export default function Home() {
-  const [category, setCategory] = useState<Category>("전체");
   const [copied, setCopied] = useState(false);
-  const visibleLinks = links.filter((link) => category === "전체" || link.category === category);
-  const featured = visibleLinks.find((link) => link.featured);
-  const regular = visibleLinks.filter((link) => !link.featured);
 
-  async function copyPageLink() {
+  async function shareProfile() {
     try {
       await navigator.clipboard.writeText(window.location.href);
       setCopied(true);
@@ -94,62 +29,40 @@ export default function Home() {
   }
 
   return (
-    <main>
+    <main id="top">
       <header className="site-header shell">
-        <a className="brand" href="#top" aria-label="myLink 홈"><span className="brand-dot" />myLink<span className="brand-period">.</span></a>
-        <span className="header-note">YOUR CORNER OF THE INTERNET</span>
-        <button className="share-button" onClick={copyPageLink} type="button" aria-live="polite">
-          {copied ? "복사했어요" : "페이지 공유"}<span className="share-icon"><ArrowIcon diagonal /></span>
-        </button>
+        <a className="brand" href="#top" aria-label="김태랑 프로필 맨 위로"><span className="brand-symbol">t<span>.</span></span><span>김태랑</span></a>
+        <span className="header-label">PERSONAL PROFILE / LINKS</span>
+        <button className="share-button" type="button" onClick={shareProfile} aria-live="polite">{copied ? "주소 복사됨" : "프로필 공유"}<ArrowIcon /></button>
       </header>
 
-      <div className="shell page-grid" id="top">
-        <section className="main-column" aria-labelledby="hero-title">
-          <div className="eyebrow"><span className="status-dot" /> MY SPACE, MY LINKS <span className="eyebrow-line" /></div>
-          <div className="hero">
-            <p className="intro-kicker">안녕하세요, 여기는</p>
-            <h1 id="hero-title">나의 모든<br /><em>연결</em>이 시작되는 곳<span className="hero-period">.</span></h1>
-            <p className="hero-description">좋아하는 일, 만들고 있는 것, 그리고 더 많은 이야기.<br className="desktop-break" /> 필요한 링크를 이곳에 가지런히 모았어요.</p>
-          </div>
+      <div className="shell profile-layout">
+        <aside className="identity" aria-labelledby="profile-name">
+          <div className="identity-top"><span className="small-label"><span className="online-dot" /> PERSONAL SPACE</span><span className="identity-number">01 / 01</span></div>
+          <div className="portrait" aria-label="김태랑 이니셜 아바타" role="img"><span className="portrait-ring ring-one" /><span className="portrait-ring ring-two" /><span className="portrait-initial">T<span>.</span></span><span className="portrait-caption">KIM TAERANG</span></div>
+          <p className="hello">안녕하세요, 저는</p>
+          <h1 id="profile-name">김태랑<span className="accent">.</span></h1>
+          <p className="identity-roman">KIM TAERANG</p>
+          <p className="identity-bio">좋아하는 것을 만들고, 배우고, 기록합니다.<br />저의 여러 이야기를 이곳에서 만나보세요.</p>
+          <div className="identity-rule" />
+          <div className="identity-footer"><span className="online-dot" /> 새로운 연결을 기다리고 있어요</div>
+        </aside>
 
-          <div className="section-heading">
-            <div><span className="section-index">01 / EXPLORE</span><h2>둘러보기<span className="heading-period">.</span></h2></div>
-            <span className="link-count">{visibleLinks.length.toString().padStart(2, "0")} LINKS</span>
-          </div>
-
-          <nav className="filters" aria-label="링크 카테고리">
-            {categories.map((item) => (
-              <button key={item} type="button" className={`filter ${category === item ? "active" : ""}`} aria-pressed={category === item} onClick={() => setCategory(item)}>{item}</button>
-            ))}
-          </nav>
-
-          {featured && (
-            <a className="featured-link" href={featured.url} target="_blank" rel="noopener noreferrer" aria-label={`${featured.title}, 새 탭에서 열기`}>
-              <div className="featured-copy"><span className="featured-label"><span className="featured-spark">✳</span> FEATURED LINK</span><div><h3>{featured.title}</h3><p>{featured.description}</p></div><span className="featured-cta">링크 열기 <ArrowIcon /></span></div>
-              <div className="featured-art" aria-hidden="true"><div className="art-orbit orbit-one" /><div className="art-orbit orbit-two" /><div className="art-center">m<span>.</span></div><span className="art-caption">MAKE / CONNECT / SHARE</span></div>
-            </a>
-          )}
-
+        <section className="content" aria-labelledby="intro-title">
+          <div className="intro"><p className="small-label">WELCOME TO MY PAGE <span className="intro-line" /></p><h2 id="intro-title">저를 더 알고 싶다면,<br /><em>여기서</em> 시작해요<span className="accent">.</span></h2><p>흩어져 있던 저의 작업과 기록, 소셜 채널을 한곳에 모았습니다. 관심 가는 곳부터 편하게 둘러보세요.</p></div>
+          <div className="links-heading"><div><span className="small-label muted">01 / FIND ME ONLINE</span><h3>나의 링크<span className="accent">.</span></h3></div><span className="count">{links.length.toString().padStart(2, "0")} LINKS</span></div>
           <div className="link-list">
-            {regular.map((link, index) => (
-              <a className="link-row" key={link.title} href={link.url} target="_blank" rel="noopener noreferrer" aria-label={`${link.title}, 새 탭에서 열기`}>
-                <span className={`link-mark ${link.tone}`}>{link.mark}</span>
-                <span className="link-copy"><span className="link-title">{link.title}</span><span className="link-description">{link.description}</span></span>
-                <span className="link-meta">{link.category} <span className="row-number">/ {(index + 1).toString().padStart(2, "0")}</span></span>
-                <span className="row-arrow"><ArrowIcon diagonal /></span>
+            {links.map((link, index) => (
+              <a className="link-row" key={link.title} href={link.url} target="_blank" rel="noopener noreferrer" aria-label={`${link.title}, 예시 링크 새 탭에서 열기`}>
+                <span className="link-icon">{link.icon}</span><span className="link-text"><strong>{link.title}</strong><span>{link.description}</span></span><span className="link-category">{link.category} / {(index + 1).toString().padStart(2, "0")}</span><span className="link-arrow"><ArrowIcon /></span>
               </a>
             ))}
           </div>
-          {regular.length === 0 && !featured && <p className="empty-state">이 카테고리에는 아직 링크가 없어요.</p>}
+          <p className="demo-note">* 링크 주소와 소개 문구는 예시입니다.</p>
+          <div className="closing"><span className="small-label">A LITTLE NOTE</span><p>좋은 연결은<br />작은 인사에서 시작되니까<span>.</span></p><div className="closing-bottom"><span>읽어주셔서 감사합니다.</span><span>— 김태랑</span></div></div>
         </section>
-
-        <aside className="side-column" aria-label="프로필 소개">
-          <div className="profile-card"><div className="profile-top"><span>ABOUT THIS SPACE</span><span className="profile-star">✳</span></div><div className="profile-avatar" aria-hidden="true"><span>m.</span></div><p className="profile-name">안녕하세요,<br />마이링크입니다.</p><p className="profile-text">여러 곳에 흩어진 나의 이야기를 하나의 페이지에 담았습니다. 편하게 둘러보고, 마음에 드는 곳에서 만나요.</p><div className="profile-bottom"><span className="available-dot" /> 새로운 연결을 환영해요</div></div>
-          <div className="side-note"><span>NOTE / 001</span><p>이 페이지의 프로필과 링크는<br />예시 데이터입니다.</p><ArrowIcon diagonal /></div>
-        </aside>
       </div>
-
-      <footer className="site-footer shell"><span>© {new Date().getFullYear()} myLink</span><span>하나의 페이지, 무한한 연결.</span><a href="#top">맨 위로 ↑</a></footer>
+      <footer className="site-footer shell"><span>© {new Date().getFullYear()} KIM TAERANG</span><span>MADE TO CONNECT.</span><a href="#top">맨 위로 ↑</a></footer>
     </main>
   );
 }

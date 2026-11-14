@@ -1,6 +1,6 @@
-# myLink
+# myLink — 김태랑 프로필
 
-TypeScript와 Next.js App Router로 만든 반응형 링크 모음 데모입니다. `DESIGN.md`의 타이포그래피, 색상, 여백 및 카드 원칙을 참고했습니다.
+TypeScript와 Next.js App Router로 만든 김태랑의 반응형 개인 프로필 페이지입니다. `DESIGN.md`의 타이포그래피, 색상, 여백 및 카드 원칙을 참고했습니다.
 
 ## 실행
 
@@ -13,4 +13,4 @@ npm run dev
 
 ## 링크 수정
 
-`src/app/page.tsx`의 `links` 배열과 프로필 문구를 원하는 내용으로 바꾸세요. 현재 링크는 모두 `example.com`을 사용하는 예시 데이터입니다.
+`src/app/page.tsx`의 `links` 배열과 프로필 문구를 원하는 내용으로 바꾸세요. 사진 대신 이니셜 아바타를 사용하며, 현재 링크는 모두 `example.com`을 사용하는 예시 데이터입니다.
